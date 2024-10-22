@@ -11,9 +11,6 @@ using System.Net.WebSockets;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 app.UseWebSockets();
 
 app.Use(async (context, next) =>
@@ -39,10 +36,8 @@ async Task HandleWebSocketConnection(WebSocket webSocket)
 
         try
         {
-            // Deserialize the received JSON into a C# object
             var telemetryData = JsonSerializer.Deserialize<TelemetryData>(receivedData);
 
-            // Here you can process or store the telemetry data
             Console.WriteLine($"Received Data: {JsonSerializer.Serialize(telemetryData, new JsonSerializerOptions { WriteIndented = true })}");
         }
         catch (Exception ex)
@@ -54,7 +49,6 @@ async Task HandleWebSocketConnection(WebSocket webSocket)
 
 app.Run();
 
-// Model for the telemetry data
 public class TelemetryData
 {
     public GpsData GpsData { get; set; }
